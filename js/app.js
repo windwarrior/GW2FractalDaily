@@ -78,7 +78,7 @@ function classify_achievement (achievement) {
       "type": FractalAchievementType.SCALE,
       "scale": parseInt(match[1]),
       "achievement": achievement
-    }, constants.FRACTALS[parseInt(match[1])]);
+    }, constants.FRACTALS.find(function (elem) { return elem.scale == match[1]}));
   } else {
     return {
       "type": FractalAchievementType.UNKNOWN,
