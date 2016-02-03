@@ -4,7 +4,7 @@ Install all dependencies:
 
 # Hacking
 Modify any file within the JS folder (do not alter bundle.js) and recompile bundle.js using:
-`browserify js/app.js -t babelify -o bundle.js`
+  browserify js/app.js -t babelify -o bundle.js`
 
 During development you might want to automatically recompile the bundle using:
-`watchify js/app.js -t babelify -o bundle.js`
+  watchify js/app.js -t babelify -o bundle.js`
