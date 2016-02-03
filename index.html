@@ -1,0 +1,52 @@
+<html>
+<head>
+  <style>
+    .table th {
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12" id="main">
+        <h2> Fractal Buddy </h2>
+
+
+      </h2>
+    </div>
+  </div>
+
+
+  <script type="text/javascript" src="bundle.js"></script>
+
+  <!-- bootstrap related files -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+  <script id="category-template" type="text/x-handlebars-template">
+    {{#buckets}}
+      <h3> {{achievement.name}} </h3>
+      <h4> {{achievement.requirement}} </h4>
+      <table class="table table-hover">
+        <thead>
+          <th>Scale</th>
+          <th width="100%">Island</th>
+          <th>Suggested AR</th>
+        </thead>
+
+        <tbody>
+          {{#scales}}
+          <tr>
+            <td> {{scale}} </td>
+            <td> {{map}} </td>
+            <td> {{agony}} </td>
+          </tr>
+          {{/scales}}
+      </table>
+    {{/buckets}}
+  </script>
+
+</body>
+</html>
