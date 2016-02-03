@@ -261,9 +261,7 @@ function drainQueue() {
         currentQueue = queue;
         queue = [];
         while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
+            currentQueue[queueIndex].run();
         }
         queueIndex = -1;
         len = queue.length;
@@ -315,6 +313,7 @@ process.binding = function (name) {
     throw new Error('process.binding is not supported');
 };
 
+// TODO(shtylman)
 process.cwd = function () { return '/' };
 process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
@@ -347,13 +346,6 @@ $(document).ready(function () {
       var achievement_url = "" + constants.API_URL + constants.ACHIEVEMENT_ENDPOINT + id;
       return Promise.resolve($.ajax(achievement_url));
     })).then(function (results) {
-      results.push({
-        "requirement": "Scale 2",
-        "name": "Scale 2",
-        "bla": "blabla",
-        "scale": 2
-      });
-
       var buckets = results.map(classify_achievement).filter(function (classified) {
         return classified.type == FractalAchievementType.RANGE;
       }).map(function (bucket) {
