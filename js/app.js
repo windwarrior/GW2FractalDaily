@@ -17,6 +17,8 @@ $(document).ready(function () {
   categoryPromise.then(function (obj) {
     let ids = obj.achievements;
 
+
+
     let promises = Promise.all(ids.map(function (id) {
       let achievement_url = `${constants.API_URL}${constants.ACHIEVEMENT_ENDPOINT}${id}`;
       return Promise.resolve($.ajax(achievement_url));
@@ -24,18 +26,26 @@ $(document).ready(function () {
       let buckets = results.map(classify_achievement).filter(function (classified) {
         return classified.type == FractalAchievementType.RANGE;
       }).map(function (bucket) {
-        let swamplands = constants.FRACTALS.filter(function (fractal) {
-          return fractal.scale >= bucket.from && fractal.scale < bucket.to && fractal.map.indexOf("Swampland") > -1;
-        });
-
-        let molten = constants.FRACTALS.filter(function (fractal) {
-          return fractal.scale >= bucket.from && fractal.scale < bucket.to && fractal.map.indexOf("Molten Boss") > -1;
-        });
-
         let dailies = results.map(classify_achievement).filter(function (classified) {
           return classified.type == FractalAchievementType.SCALE
             && classified.scale >= bucket.from
               && classified.scale < bucket.to;
+        });
+
+        let swamplands = constants.FRACTALS.filter(function (fractal) {
+          return fractal.scale >= bucket.from && fractal.scale < bucket.to && fractal.map.indexOf("Swampland") > -1;
+        }).filter(function (element) {
+          return dailies.find(function (daily) {
+            return daily.scale == element.scale
+          }) == null;
+        });
+
+        let molten = constants.FRACTALS.filter(function (fractal) {
+          return fractal.scale >= bucket.from && fractal.scale < bucket.to && fractal.map.indexOf("Molten Boss") > -1;
+        }).filter(function (element) {
+          return dailies.find(function (daily) {
+            return daily.scale == element.scale
+          }) == null;
         });
 
         let achievies = dailies.concat(swamplands, molten).slice(0,3);
@@ -76,7 +86,6 @@ function classify_achievement (achievement) {
   } else if (match = achievement.name.match(scale_matcher)) {
     return $.extend({
       "type": FractalAchievementType.SCALE,
-      "scale": parseInt(match[1]),
       "achievement": achievement
     }, constants.FRACTALS.find(function (elem) { return elem.scale == match[1]}));
   } else {

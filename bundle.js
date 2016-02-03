@@ -347,19 +347,34 @@ $(document).ready(function () {
       var achievement_url = "" + constants.API_URL + constants.ACHIEVEMENT_ENDPOINT + id;
       return Promise.resolve($.ajax(achievement_url));
     })).then(function (results) {
+      results.push({
+        "requirement": "Scale 2",
+        "name": "Scale 2",
+        "bla": "blabla",
+        "scale": 2
+      });
+
       var buckets = results.map(classify_achievement).filter(function (classified) {
         return classified.type == FractalAchievementType.RANGE;
       }).map(function (bucket) {
+        var dailies = results.map(classify_achievement).filter(function (classified) {
+          return classified.type == FractalAchievementType.SCALE && classified.scale >= bucket.from && classified.scale < bucket.to;
+        });
+
         var swamplands = constants.FRACTALS.filter(function (fractal) {
           return fractal.scale >= bucket.from && fractal.scale < bucket.to && fractal.map.indexOf("Swampland") > -1;
+        }).filter(function (element) {
+          return dailies.find(function (daily) {
+            return daily.scale == element.scale;
+          }) == null;
         });
 
         var molten = constants.FRACTALS.filter(function (fractal) {
           return fractal.scale >= bucket.from && fractal.scale < bucket.to && fractal.map.indexOf("Molten Boss") > -1;
-        });
-
-        var dailies = results.map(classify_achievement).filter(function (classified) {
-          return classified.type == FractalAchievementType.SCALE && classified.scale >= bucket.from && classified.scale < bucket.to;
+        }).filter(function (element) {
+          return dailies.find(function (daily) {
+            return daily.scale == element.scale;
+          }) == null;
         });
 
         var achievies = dailies.concat(swamplands, molten).slice(0, 3);
@@ -402,7 +417,6 @@ function classify_achievement(achievement) {
   } else if (match = achievement.name.match(scale_matcher)) {
     return $.extend({
       "type": FractalAchievementType.SCALE,
-      "scale": parseInt(match[1]),
       "achievement": achievement
     }, constants.FRACTALS.find(function (elem) {
       return elem.scale == match[1];

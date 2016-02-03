@@ -38,9 +38,9 @@
 
         <tbody>
           {{#scales}}
-          <tr>
+          <tr class="{{#if type}}success{{/if}}">
             <td> {{scale}} </td>
-            <td> {{map}} </td>
+            <td> {{map}} {{#if info}}({{info}}){{/if}} {{#if type}} Daily {{/if}}</td>
             <td> {{agony}} </td>
           </tr>
           {{/scales}}
