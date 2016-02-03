@@ -17,8 +17,6 @@ $(document).ready(function () {
   categoryPromise.then(function (obj) {
     let ids = obj.achievements;
 
-
-
     let promises = Promise.all(ids.map(function (id) {
       let achievement_url = `${constants.API_URL}${constants.ACHIEVEMENT_ENDPOINT}${id}`;
       return Promise.resolve($.ajax(achievement_url));
